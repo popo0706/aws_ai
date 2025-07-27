@@ -1,3 +1,4 @@
+/* main.css（修正後 全量） */
 body {
   background: #18191A;
   color: #f2f2f7;
@@ -23,54 +24,45 @@ body {
   transition: width 0.22s cubic-bezier(.7,.1,.7,1.05);
   z-index: 10;
   min-width: 48px;
-  overflow: visible; /* 折りたたみ後でもボタンが隠れないように */
+  overflow: visible;
 }
 .sidebar.collapsed {
   width: 48px;
 }
-
-/* 折りたたみボタン */
 .sidebar-toggle {
   background: #23252b;
   border: none;
   color: #b5b6bb;
-  font-size: 1.4rem;            /* さらに小さめに */
-  width: 40px;                  /* 小さめに */
-  height: 40px;                 /* 小さめに */
+  font-size: 1.4rem;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
   outline: none;
   position: absolute;
-  top: 50%;                     
-  right: -20px;                 /* 半分はみ出し */
+  top: 50%;
+  right: -20px;
   transform: translateY(-50%);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-/* ホバー時の色変化を無効化 */
 .sidebar-toggle:hover,
 .sidebar-toggle:focus {
   background: #23252b;
 }
-
-/* 矢印アイコン */
 .sidebar-arrow {
-  font-size: 1.4rem;            /* アイコンも小さめ */
+  font-size: 1.4rem;
   line-height: 1;
   display: inline-block;
   pointer-events: none;
   font-family: Arial, "Source Sans Pro", sans-serif;
 }
-
-/* 折りたたんだときはコンテンツ非表示 */
 .sidebar.collapsed .sidebar-content {
   display: none;
   opacity: 0;
   pointer-events: none;
 }
-
-/* サイドバー内コンテンツ */
 .sidebar-content {
   display: flex;
   flex-direction: column;
@@ -79,8 +71,6 @@ body {
   opacity: 1;
   transition: opacity 0.15s;
 }
-
-/* タイトル周り */
 .sidebar-title {
   font-weight: 800;
   font-size: 1.37rem;
@@ -93,8 +83,6 @@ body {
 }
 .sidebar-icon { font-size: 1.2em; }
 .sidebar-title-text { font-size: 1.09em; letter-spacing: .03em; }
-
-/* セクション */
 .sidebar-section {
   display: flex;
   flex-direction: column;
@@ -106,7 +94,7 @@ body {
   font-size: 1.07rem;
   letter-spacing: .02em;
 }
-/* 【ここから追加】ドロップダウンの幅調整と省略表示 */
+/* ドロップダウンの幅調整と省略表示 */
 .sidebar select {
   background: #292b32;
   color: #f2f2f7;
@@ -121,7 +109,6 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-/* 【ここまで追加】 */
 
 /* --- メイン部分 --- */
 .main-content {
@@ -151,6 +138,7 @@ header h1 {
   text-align: center;
 }
 
+/* --- チャットボックス --- */
 .chat-box {
   background: #202226;
   border-radius: 12px;
@@ -164,8 +152,38 @@ header h1 {
   word-break: break-word;
   width: 100%;
   box-sizing: border-box;
+
+  /* 追加：Flex コンテナ化 */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
+/* --- チャットメッセージのスタイル --- */
+.chat-message {
+  margin-bottom: 8px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  max-width: 80%;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+/* AI（assistant）発言は左寄せでグレー系 */
+.assistant-message {
+  background: #32333a;
+  color: #f2f2f7;
+  align-self: flex-start;
+}
+
+/* ユーザー（user）発言は右寄せでブルー系 */
+.user-message {
+  background: #6188f3;
+  color: #fff;
+  align-self: flex-end;
+}
+
+/* --- 入力欄まわり --- */
 .chat-input-wrap {
   background: #23252b;
   border-radius: 14px;
