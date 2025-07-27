@@ -1,35 +1,35 @@
 import json
 import boto3
+import time
+import random
+from botocore.config import Config
+from botocore.exceptions import ClientError
+
+# 再試行設定：10回まで、自動リトライ＋標準的なバックオフ
+boto_config = Config(retries={"max_attempts": 10, "mode": "standard"})
 
 # Bedrock Claude 呼び出しクライアント
-br = boto3.client("bedrock-runtime", region_name="ap-northeast-1")
+br = boto3.client("bedrock-runtime", region_name="ap-northeast-1", config=boto_config)
 
-# CORS 用ヘッダー
 CORS_HEADERS = {
-    "Access-Control-Allow-Origin": "*",  # 本番は絞ってください
+    "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
 }
 
 
 def lambda_handler(event, context):
-
-    # デバッグ用
-    print(">>> Lambda start, event:", json.dumps(event, ensure_ascii=False))
-
-    # 1) プリフライト OPTIONS 対応
+    # プリフライト対応
     if event.get("httpMethod") == "OPTIONS":
         return {"statusCode": 200, "headers": CORS_HEADERS, "body": ""}
 
-    # 2) リクエストボディの取得
+    # リクエストボディ取得
     try:
         body = json.loads(event.get("body") or "{}")
     except json.JSONDecodeError:
         body = {}
 
-    # 3) フロントから送られてくる会話履歴
     client_messages = body.get("messages", [])
-    # システムプロンプトを先頭に入れる
     model_messages = [
         {
             "role": "assistant",
@@ -37,32 +37,55 @@ def lambda_handler(event, context):
         }
     ] + client_messages
 
-    # 4) Bedrock Claude 用ペイロード
     payload = {
         "anthropic_version": "bedrock-2023-05-31",
         "messages": model_messages,
-        "max_tokens": 256,
+        "max_tokens": 8192,
     }
 
-    # デバッグ用
-    print(">>> Parsed body:", event.get("body"))
+    # ── ここからリトライ＋指数バックオフ実装 ──
+    max_retries = 5
+    for attempt in range(1, max_retries + 1):
+        try:
+            response = br.invoke_model(
+                modelId="anthropic.claude-3-5-sonnet-20240620-v1:0",
+                contentType="application/json",
+                accept="application/json",
+                body=json.dumps(payload),
+            )
+            break  # 成功したらループを抜ける
 
-    # 5) Claude 呼び出し
-    res = br.invoke_model(
-        modelId="anthropic.claude-3-haiku-20240307-v1:0",
-        contentType="application/json",
-        accept="application/json",
-        body=json.dumps(payload),
-    )
+        except ClientError as e:
+            code = e.response.get("Error", {}).get("Code")
+            if code == "ThrottlingException" and attempt < max_retries:
+                # 待機時間：2^(attempt) 秒 ＋ 0～1 秒のランダム
+                wait_time = (2**attempt) + random.random()
+                print(
+                    f"Throttling したので {wait_time:.1f}s 待ってリトライします… (試行 {attempt}/{max_retries})"
+                )
+                time.sleep(wait_time)
+                continue  # 再試行
+            else:
+                # 上限超過や別エラーの場合はそのまま例外を投げる
+                raise
 
-    # 6) 応答テキストを取り出す
-    result_body = res["body"].read()
+    else:
+        # 5 回全部失敗した場合
+        return {
+            "statusCode": 500,
+            "headers": CORS_HEADERS,
+            "body": json.dumps(
+                {
+                    "error": "モデル呼び出しに失敗しました（スロットリングが続いています）"
+                }
+            ),
+        }
+    # ── リトライ部分 終了 ──
+
+    # レスポンス組み立て
+    result_body = response["body"].read()
     reply_text = json.loads(result_body)["content"][0]["text"]
 
-    # デバッグ用
-    print(">>> reply_text:", reply_text)
-
-    # 7) レスポンス返却（CORS ヘッダー付き）
     return {
         "statusCode": 200,
         "headers": CORS_HEADERS,
