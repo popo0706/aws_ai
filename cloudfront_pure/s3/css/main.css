@@ -1,0 +1,300 @@
+body {
+  background: #18191A;
+  color: #f2f2f7;
+  margin: 0;
+  font-family: 'Source Sans Pro', 'Noto Sans JP', Arial, sans-serif;
+  min-height: 100vh;
+  font-size: 1.07rem;
+}
+
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* --- サイドバー --- */
+.sidebar {
+  width: 240px;
+  background: #22242a;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.11);
+  position: relative;
+  transition: width 0.22s cubic-bezier(.7,.1,.7,1.05);
+  z-index: 10;
+  min-width: 48px;
+  overflow: visible; /* 折りたたみ後でもボタンが隠れないように */
+}
+.sidebar.collapsed {
+  width: 48px;
+}
+
+/* 折りたたみボタン */
+.sidebar-toggle {
+  background: #23252b;
+  border: none;
+  color: #b5b6bb;
+  font-size: 1.4rem;            /* さらに小さめに */
+  width: 40px;                  /* 小さめに */
+  height: 40px;                 /* 小さめに */
+  cursor: pointer;
+  outline: none;
+  position: absolute;
+  top: 50%;                     
+  right: -20px;                 /* 半分はみ出し */
+  transform: translateY(-50%);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* ホバー時の色変化を無効化 */
+.sidebar-toggle:hover,
+.sidebar-toggle:focus {
+  background: #23252b;
+}
+
+/* 矢印アイコン */
+.sidebar-arrow {
+  font-size: 1.4rem;            /* アイコンも小さめ */
+  line-height: 1;
+  display: inline-block;
+  pointer-events: none;
+  font-family: Arial, "Source Sans Pro", sans-serif;
+}
+
+/* 折りたたんだときはコンテンツ非表示 */
+.sidebar.collapsed .sidebar-content {
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* サイドバー内コンテンツ */
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  padding: 38px 20px 18px 28px;
+  opacity: 1;
+  transition: opacity 0.15s;
+}
+
+/* タイトル周り */
+.sidebar-title {
+  font-weight: 800;
+  font-size: 1.37rem;
+  margin-bottom: 22px;
+  letter-spacing: .05em;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sidebar-icon { font-size: 1.2em; }
+.sidebar-title-text { font-size: 1.09em; letter-spacing: .03em; }
+
+/* セクション */
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sidebar-label {
+  font-weight: 700;
+  color: #f5f5f5;
+  font-size: 1.07rem;
+  letter-spacing: .02em;
+}
+/* 【ここから追加】ドロップダウンの幅調整と省略表示 */
+.sidebar select {
+  background: #292b32;
+  color: #f2f2f7;
+  border: 1px solid #373944;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 1.08rem;
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* 【ここまで追加】 */
+
+/* --- メイン部分 --- */
+.main-content {
+  flex: 1;
+  padding: 40px 0 32px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+.centered-ui {
+  width: 100%;
+  max-width: 740px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+header h1 {
+  margin: 0 0 32px 0;
+  font-size: 2.0rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  color: #fff;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.chat-box {
+  background: #202226;
+  border-radius: 12px;
+  padding: 22px;
+  min-height: 240px;
+  margin-bottom: 18px;
+  max-height: 48vh;
+  overflow-y: auto;
+  box-shadow: 0 2px 18px rgba(0,0,0,0.12);
+  font-size: 1.12rem;
+  word-break: break-word;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.chat-input-wrap {
+  background: #23252b;
+  border-radius: 14px;
+  border: 1.2px solid #35363e;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+}
+
+#chat-input {
+  background: transparent;
+  border: none;
+  color: #f2f2f7;
+  border-radius: 14px 14px 0 0;
+  font-size: 1.07rem;
+  padding: 16px 18px 14px 18px;
+  min-height: 44px;
+  max-height: 280px;
+  width: 100%;
+  resize: none;
+  outline: none;
+  line-height: 1.6;
+  font-family: inherit;
+  transition: background 0.14s;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+#chat-input:focus { background: #22242a; }
+
+.chat-input-actions {
+  background: #222325;
+  border-radius: 0 0 13px 13px;
+  padding: 0 8px 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 40px;
+  box-sizing: border-box;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  border-radius: 7px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.16s;
+  padding: 0;
+  color: #b7b7c7;
+}
+.icon-btn:hover,
+.icon-btn:focus {
+  background: #282b31;
+}
+.icon-btn svg {
+  display: block;
+  pointer-events: none;
+}
+
+.upload-note {
+  color: #b0b0b8;
+  font-size: 0.92rem;
+  margin-left: 4px;
+}
+#file-list {
+  font-size: 0.98rem;
+  color: #bfc8de;
+  margin-top: 4px;
+  line-height: 1.4;
+  word-break: break-all;
+}
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+.remove-file-btn {
+  background: none;
+  border: none;
+  color: #e87b7b;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0 4px;
+}
+#file-list .error {
+  color: #e87b7b;
+  margin-top: 4px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+button {
+  background: #6188f3;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+button:hover { background: #3956b5; }
+#clear-btn {
+  background: #585c67;
+}
+#clear-btn:hover { background: #32333a; }
+
+.footer-note {
+  margin-top: 32px;
+  font-size: 0.93rem;
+  color: #8e94a6;
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .centered-ui { max-width: 98vw; }
+  header h1 { font-size: 1.1rem; }
+}
