@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', function () {
-  // --- 既存のサイドバー折りたたみ制御・ファイルアップロード機能 ---
+  // --- サイドバー折りたたみ制御 ---
   const sidebar = document.getElementById('sidebar');
   const toggleBtn = document.getElementById('sidebar-toggle');
   const arrow = document.getElementById('sidebar-arrow');
@@ -25,6 +25,7 @@ window.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // --- ファイルアップロード制御 ---
   const fileInput = document.getElementById('file-input');
   const fileList = document.getElementById('file-list');
   let selectedFiles = [];
@@ -102,44 +103,36 @@ window.addEventListener('DOMContentLoaded', function () {
     document.getElementById('chat-input').value = '';
   });
 
-  // --- ここからチャット送信／受信ロジックの追加 ---
+  // --- チャット送信／受信ロジック（UI層）---
   const chatForm = document.getElementById('chat-form');
   const chatInput = document.getElementById('chat-input');
   const chatBox = document.getElementById('chat-box');
-  // CloudFront の挙動で /api/chat にルーティングする想定
-  const API_ENDPOINT = 'https://4b426sq963.execute-api.ap-northeast-1.amazonaws.com/prod/chat';  // 実際の CloudFront ドメイン＋パスに合わせて書き換えてください
 
   chatForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const message = chatInput.value.trim();
     if (!message) return;
 
-    // ユーザーのメッセージを画面に追加
+    // 画面にメッセージを追加
     appendMessage('user', message);
     chatInput.value = '';
 
-    // 読み込み中表示
+    // 読み込み中
     appendMessage('assistant', '...');
 
     try {
-      const res = await fetch(API_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: message })
-      });
-      if (!res.ok) throw new Error(`HTTPエラー ${res.status}`);
-      const data = await res.json();
-
-      // 読み込み中表示を消して、AIの返信を追加
+      // apiService.js で定義した sendMessage() を呼び出し
+      const reply = await window.sendMessage(message);
+      // 「…」を消して返信表示
       removeLastLoading();
-      appendMessage('assistant', data.reply);
+      appendMessage('assistant', reply);
     } catch (err) {
       removeLastLoading();
       appendMessage('assistant', `エラーが発生しました: ${err.message}`);
     }
   });
 
-  // メッセージをチャットボックスに追加する関数
+  // メッセージをチャットボックスに追加
   function appendMessage(role, text) {
     const msg = document.createElement('div');
     msg.className = `chat-message ${role}-message`;
@@ -148,7 +141,7 @@ window.addEventListener('DOMContentLoaded', function () {
     chatBox.scrollTop = chatBox.scrollHeight;
   }
 
-  // 読み込み中（"..."）を消す関数
+  // 「…」を最後のメッセージから消す
   function removeLastLoading() {
     const msgs = chatBox.getElementsByClassName('assistant-message');
     if (msgs.length && msgs[msgs.length - 1].textContent === '...') {

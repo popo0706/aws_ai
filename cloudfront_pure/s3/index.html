@@ -5,7 +5,10 @@
   <meta charset="UTF-8">
   <title>Streamlit風チャットUI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  >
   <link rel="stylesheet" href="./css/main.css">
 </head>
 
@@ -13,7 +16,11 @@
   <div class="app-container">
     <!-- サイドバー -->
     <aside class="sidebar" id="sidebar">
-      <button class="sidebar-toggle" id="sidebar-toggle" aria-label="サイドバー折りたたみ">
+      <button
+        class="sidebar-toggle"
+        id="sidebar-toggle"
+        aria-label="サイドバー折りたたみ"
+      >
         <span id="sidebar-arrow" class="sidebar-arrow">&lt;</span>
       </button>
       <div class="sidebar-content" id="sidebar-content">
@@ -26,7 +33,11 @@
           <select id="model">
             <option value="o3">o3</option>
             <option value="gpt-4">gpt-4</option>
-            <option value="超長いモデル名をテストするためのダミーテキスト">超長いモデル名をテストするためのダミーテキスト</option>
+            <option
+              value="超長いモデル名をテストするためのダミーテキスト"
+            >
+              超長いモデル名をテストするためのダミーテキスト
+            </option>
           </select>
         </div>
         <div class="sidebar-section">
@@ -38,7 +49,7 @@
       </div>
     </aside>
 
-    <!-- メイン -->
+    <!-- メインコンテンツ -->
     <main class="main-content" id="main-content">
       <div class="centered-ui">
         <header>
@@ -49,27 +60,49 @@
 
         <form id="chat-form" autocomplete="off" enctype="multipart/form-data">
           <div class="chat-input-wrap">
-            <textarea id="chat-input" placeholder="メッセージを入力..." rows="2"></textarea>
+            <textarea
+              id="chat-input"
+              placeholder="メッセージを入力..."
+              rows="2"
+            ></textarea>
             <div class="chat-input-actions">
               <div class="action-left">
                 <label for="file-input" class="icon-btn" title="ファイルを添付">
+                  <!-- ファイルアイコンSVG -->
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                     <circle cx="12" cy="12" r="11" fill="#23252b" />
-                    <path d="M12 8v8M8 12h8" stroke="#b7b7c7" stroke-width="2" stroke-linecap="round" />
+                    <path
+                      d="M12 8v8M8 12h8"
+                      stroke="#b7b7c7"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
                   </svg>
-                  <input type="file" id="file-input" multiple accept="*/*" style="display:none;">
+                  <input
+                    type="file"
+                    id="file-input"
+                    multiple
+                    accept="*/*"
+                    style="display:none;"
+                  >
                 </label>
               </div>
               <div class="action-right">
                 <button type="submit" class="icon-btn" aria-label="送信">
+                  <!-- 送信アイコンSVG -->
                   <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                    <path d="M4 11L18 4L11 18L10 13L4 11Z" fill="#fff" />
+                    <path
+                      d="M4 11L18 4L11 18L10 13L4 11Z"
+                      fill="#fff"
+                    />
                   </svg>
                 </button>
               </div>
             </div>
           </div>
-          <span class="upload-note">最大3ファイル・1ファイル8MBまで・合計10MBまで</span>
+          <span class="upload-note">
+            最大3ファイル・1ファイル8MBまで・合計10MBまで
+          </span>
           <div id="file-list"></div>
           <div class="actions">
             <button type="button" id="clear-btn">🗑 クリア</button>
@@ -83,7 +116,10 @@
     </main>
   </div>
 
-  <script src="./js/main.js"></script>
+  <!-- API 呼び出しロジックを分離 -->
+  <script src="./js/apiService.js" defer></script>
+  <!-- 画面操作ロジック -->
+  <script src="./js/main.js" defer></script>
 </body>
 
 </html>
