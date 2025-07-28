@@ -1,4 +1,4 @@
-/* main.css（修正後 全量） */
+/* main.css（フォントサイズを ChatGPT に近づけました） */
 
 /* ——— 全体設定 ——— */
 body {
@@ -6,13 +6,13 @@ body {
   color: #f2f2f7;
   margin: 0;
   font-family: 'Source Sans Pro', 'Noto Sans JP', Arial, sans-serif;
-  font-size: 1.07rem;
+  font-size: 0.875rem; /* ▼ ChatGPT風の14px 相当に */
 }
 
 /* ——— レイアウト ——— */
 .app-container {
   display: flex;
-  height: 100vh; /* メインのみスクロール */
+  height: 100vh;
 }
 
 /* ——— サイドバー ——— */
@@ -151,7 +151,7 @@ header h1 {
   padding: 22px;
   min-height: 240px;
   margin-bottom: 18px;
-  font-size: 1.12rem;
+  font-size: 1rem; /* ▼ ChatGPT風の14px 相当に */
   word-break: break-word;
   width: 100%;
   box-sizing: border-box;
@@ -160,7 +160,7 @@ header h1 {
   align-items: flex-start;
 }
 
-/* ——— メッセージ ——— */
+/* ——— メッセージ共通 ——— */
 .chat-message {
   margin-bottom: 8px;
   padding: 10px 14px;
@@ -168,18 +168,22 @@ header h1 {
   max-width: 80%;
   word-break: break-word;
   line-height: 1.4;
-  white-space: pre-line; /* ← 改行をそのまま反映 */
-  position: relative;   /* コピーボタン配置のため */
+  white-space: pre-line;
+  position: relative;
 }
-.assistant-message {
+
+/* ——— ユーザーメッセージ ——— */
+.user-message {
   background: #32333a;
   color: #f2f2f7;
-  align-self: flex-start;
-}
-.user-message {
-  background: #6188f3;
-  color: #fff;
   align-self: flex-end;
+}
+
+/* ——— アシスタントメッセージ ——— */
+.assistant-message {
+  background: transparent;
+  color: #f2f2f7;
+  align-self: flex-start;
 }
 
 /* ——— メッセージコピー用ボタン ——— */
@@ -204,7 +208,6 @@ header h1 {
 .copy-btn:hover {
   color: #bbb;
 }
-/* SVGアイコンのサイズ指定 */
 .copy-btn svg {
   width: 16px;
   height: 16px;
@@ -251,11 +254,11 @@ header h1 {
   border: none;
   color: #f2f2f7;
   border-radius: 14px 14px 0 0;
-  font-size: 1.07rem;
+  font-size: 1rem; /* ▼ 入力欄も14px に */
   padding: 16px 18px 14px 18px;
   min-height: 44px;
-  height: auto;       /* ← 自動拡張対応 */
-  max-height: 280px;  /* ← およそ10行分 */
+  height: auto;
+  max-height: 280px;
   width: 100%;
   resize: none;
   outline: none;
@@ -342,7 +345,7 @@ button:hover {
   background: #3956b5;
 }
 
-/* ——— 落ち着いた「新しい会話を開始」ボタン ——— */
+/* ——— 「新しい会話を開始」ボタン ——— */
 #clear-btn {
   background: transparent;
   color: #c9c9c9;
@@ -369,12 +372,10 @@ button:hover {
 }
 
 /* ——— ChatGPT風スクロールバー ——— */
-/* Firefox */
 .main-content {
   scrollbar-width: thin;
   scrollbar-color: #52525c transparent;
 }
-/* Webkit系 */
 .main-content::-webkit-scrollbar {
   width: 8px;
 }
