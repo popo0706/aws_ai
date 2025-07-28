@@ -1,4 +1,4 @@
-/* main.css（フォントサイズを ChatGPT に近づけました） */
+/* main.css（ChatGPT 風フォントサイズ＋Streamlit風サイドバー折り畳みアイコン調整） */
 
 /* ——— 全体設定 ——— */
 body {
@@ -6,7 +6,7 @@ body {
   color: #f2f2f7;
   margin: 0;
   font-family: 'Source Sans Pro', 'Noto Sans JP', Arial, sans-serif;
-  font-size: 0.875rem; /* ▼ ChatGPT風の14px 相当に */
+  font-size: 0.875rem; /* ChatGPT風の14px 相当 */
 }
 
 /* ——— レイアウト ——— */
@@ -23,48 +23,61 @@ body {
   flex-direction: column;
   box-shadow: 2px 0 10px rgba(0,0,0,0.11);
   position: relative;
-  transition: width 0.22s cubic-bezier(.7,.1,.7,1.05);
-  z-index: 10;
-  min-width: 48px;
+  transition: width 0.22s cubic-bezier(.7,.1,.7,1.05), background 0.22s;
   overflow: visible;
+  min-width: 0; /* 折り畳み時に 0 にできるように */
 }
 .sidebar.collapsed {
-  width: 48px;
-}
-.sidebar-toggle {
-  background: #23252b;
-  border: none;
-  color: #b5b6bb;
-  font-size: 1.4rem;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  outline: none;
-  position: absolute;
-  top: 50%;
-  right: -20px;
-  transform: translateY(-50%);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.sidebar-toggle:hover,
-.sidebar-toggle:focus {
-  background: #23252b;
-}
-.sidebar-arrow {
-  font-size: 1.4rem;
-  line-height: 1;
-  display: inline-block;
-  pointer-events: none;
-  font-family: Arial, "Source Sans Pro", sans-serif;
+  width: 0;                 /* 幅を 0 に */
+  background: transparent;  /* 背景を透過 */
 }
 .sidebar.collapsed .sidebar-content {
   display: none;
   opacity: 0;
   pointer-events: none;
 }
+
+/* ——— 折り畳みトグルボタン ——— */
+.sidebar-toggle {
+  position: absolute;
+  top: 40px;           
+  right: 8px;          
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b5b6bb;
+  font-size: 1rem;
+  border-radius: 6px;
+}
+.sidebar-toggle:hover,
+.sidebar-toggle:focus {
+  background: transparent; /* ホバー時の色変化なし */
+}
+.sidebar.collapsed .sidebar-toggle {
+  left: 8px;
+  right: auto;
+}
+
+/* ——— アイコン（〈〉） ——— */
+.sidebar-arrow {
+  display: inline-block;
+  font-family: Arial, "Source Sans Pro", sans-serif;
+  font-size: 1rem;
+  line-height: 1;
+  pointer-events: none;
+  transition: transform 0.22s;
+}
+.sidebar.collapsed .sidebar-arrow {
+  transform: rotate(180deg);
+}
+
+/* ——— サイドバー中身 ——— */
 .sidebar-content {
   display: flex;
   flex-direction: column;
@@ -73,6 +86,8 @@ body {
   opacity: 1;
   transition: opacity 0.15s;
 }
+
+/* ——— サイドバー内各要素 ——— */
 .sidebar-title {
   font-weight: 800;
   font-size: 1.37rem;
@@ -122,6 +137,21 @@ body {
   align-items: center;
   min-width: 0;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #52525c transparent;
+}
+.main-content::-webkit-scrollbar {
+  width: 8px;
+}
+.main-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.main-content::-webkit-scrollbar-thumb {
+  background: #52525c;
+  border-radius: 4px;
+}
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: #6b6b7b;
 }
 
 /* ——— 中央揃えコンテナ ——— */
@@ -151,7 +181,7 @@ header h1 {
   padding: 22px;
   min-height: 240px;
   margin-bottom: 18px;
-  font-size: 1rem; /* ▼ ChatGPT風の14px 相当に */
+  font-size: 1rem;
   word-break: break-word;
   width: 100%;
   box-sizing: border-box;
@@ -171,15 +201,11 @@ header h1 {
   white-space: pre-line;
   position: relative;
 }
-
-/* ——— ユーザーメッセージ ——— */
 .user-message {
   background: #32333a;
   color: #f2f2f7;
   align-self: flex-end;
 }
-
-/* ——— アシスタントメッセージ ——— */
 .assistant-message {
   background: transparent;
   color: #f2f2f7;
@@ -245,28 +271,26 @@ header h1 {
   display: flex;
   flex-direction: column;
   width: 100%;
-  position: relative;
   box-sizing: border-box;
 }
-
 #chat-input {
   background: transparent;
   border: none;
   color: #f2f2f7;
   border-radius: 14px 14px 0 0;
-  font-size: 1rem; /* ▼ 入力欄も14px に */
+  font-size: 1rem;
   padding: 16px 18px 14px 18px;
   min-height: 44px;
-  height: auto;
   max-height: 280px;
   width: 100%;
+  box-sizing: border-box;      /* 追加：パディングを含めて幅を計算 */
+  overflow-y: auto;
+  overflow-x: hidden;          /* 横方向のスクロールを出さない */
   resize: none;
   outline: none;
   line-height: 1.6;
   font-family: inherit;
   transition: background 0.14s;
-  overflow-y: auto;
-  box-sizing: border-box;
 }
 #chat-input:focus {
   background: #22242a;
@@ -280,9 +304,9 @@ header h1 {
   align-items: center;
   justify-content: space-between;
   min-height: 40px;
-  box-sizing: border-box;
 }
 
+/* ——— アイコンボタン ——— */
 .icon-btn {
   background: none;
   border: none;
@@ -313,7 +337,6 @@ header h1 {
   font-size: 0.92rem;
   margin-left: 4px;
 }
-
 #file-list {
   font-size: 0.98rem;
   color: #bfc8de;
@@ -364,30 +387,10 @@ button:hover {
 #clear-btn:hover {
   background: rgba(255,255,255,0.08);
 }
-
 .new-chat-icon {
   stroke: currentColor;
   width: 16px;
   height: 16px;
-}
-
-/* ——— ChatGPT風スクロールバー ——— */
-.main-content {
-  scrollbar-width: thin;
-  scrollbar-color: #52525c transparent;
-}
-.main-content::-webkit-scrollbar {
-  width: 8px;
-}
-.main-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-.main-content::-webkit-scrollbar-thumb {
-  background: #52525c;
-  border-radius: 4px;
-}
-.main-content::-webkit-scrollbar-thumb:hover {
-  background: #6b6b7b;
 }
 
 /* ——— レスポンシブ対応 ——— */
