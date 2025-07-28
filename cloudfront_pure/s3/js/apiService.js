@@ -9,7 +9,7 @@
   // ───────────────
   const CF_DOMAIN = 'https://<YOUR_CLOUDFRONT_DOMAIN>';
   // CloudFront 配下の /chat にフォワード設定をしている想定
-  const API_ENDPOINT = 'https://4b426sq963.execute-api.ap-northeast-1.amazonaws.com/prod/chat';
+  const API_ENDPOINT = 'https://e2ynqgidlnt53krhmlt6em4jrm0rnyai.lambda-url.ap-northeast-1.on.aws/';
 
   /**
    * メッセージ履歴を送信し、AI の返信テキストを返す
