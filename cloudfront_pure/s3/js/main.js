@@ -1,6 +1,6 @@
 /**
  * main.js
- * サイドバー制御＋チャット履歴管理＋送受信ロジック
+ * サイドバー制御＋チャット履歴管理＋送受信ロジック＋テキストエリア自動リサイズ
  */
 window.addEventListener('DOMContentLoaded', function () {
   // --- サイドバー折りたたみ制御 ---
@@ -17,6 +17,13 @@ window.addEventListener('DOMContentLoaded', function () {
 
   // 会話履歴を保持する配列
   const chatHistory = [];
+
+  // 自動リサイズ: 入力内容に応じて高さを調整
+  chatInput.addEventListener('input', function () {
+    // 一度高さを自動に戻してから scrollHeight 分だけ伸ばす
+    this.style.height = 'auto';
+    this.style.height = this.scrollHeight + 'px';
+  });
 
   // Ctrl+Enter で送信
   chatInput.addEventListener('keydown', (e) => {
@@ -39,7 +46,11 @@ window.addEventListener('DOMContentLoaded', function () {
     // ユーザー発言を追加
     appendMessage('user', message);
     chatHistory.push({ role: 'user', content: message });
+
+    // 送信後、入力欄リセット＆高さリセット
     chatInput.value = '';
+    chatInput.style.height = 'auto';
+    chatInput.style.height = chatInput.scrollHeight + 'px';
 
     // 読み込み中マーク
     appendMessage('assistant', '…');
@@ -64,13 +75,15 @@ window.addEventListener('DOMContentLoaded', function () {
     chatHistory.length = 0;
     // 画面のメッセージをクリア
     chatBox.innerHTML = '';
-    // 添付ファイルリストをクリア（必要に応じて）
+    // 添付ファイルリストをクリア
     const fileList = document.getElementById('file-list');
     if (fileList) fileList.innerHTML = '';
     const fileInput = document.getElementById('file-input');
     if (fileInput) fileInput.value = '';
-    // 入力欄をクリア＆フォーカス
+    // 入力欄をクリア＆高さリセット＆フォーカス
     chatInput.value = '';
+    chatInput.style.height = 'auto';
+    chatInput.style.height = chatInput.scrollHeight + 'px';
     chatInput.focus();
   });
 

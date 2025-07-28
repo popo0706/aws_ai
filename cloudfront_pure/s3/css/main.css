@@ -168,6 +168,7 @@ header h1 {
   max-width: 80%;
   word-break: break-word;
   line-height: 1.4;
+  white-space: pre-line; /* ← 改行をそのまま反映 */
 }
 .assistant-message {
   background: #32333a;
@@ -201,7 +202,8 @@ header h1 {
   font-size: 1.07rem;
   padding: 16px 18px 14px 18px;
   min-height: 44px;
-  max-height: 280px;
+  height: auto;       /* ← 自動拡張対応 */
+  max-height: 280px;  /* ← およそ10行分 */
   width: 100%;
   resize: none;
   outline: none;
