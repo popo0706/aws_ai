@@ -88,7 +88,8 @@
                 </label>
               </div>
               <div class="action-right">
-                <button type="submit" class="icon-btn" aria-label="送信">
+                <!-- 送信ボタンにツールチップ(title)を追加 -->
+                <button type="submit" class="icon-btn" aria-label="送信" title="送信(Ctrl+Enter)">
                   <!-- 送信アイコンSVG -->
                   <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
                     <path
@@ -116,7 +117,7 @@
     </main>
   </div>
 
-  <!-- API 呼び出しロジックを分離 -->
+  <!-- API 呼び出しロジック -->
   <script src="./js/apiService.js" defer></script>
   <!-- 画面操作ロジック -->
   <script src="./js/main.js" defer></script>

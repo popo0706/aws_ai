@@ -18,6 +18,19 @@ window.addEventListener('DOMContentLoaded', function () {
   // 会話履歴を保持する配列
   const chatHistory = [];
 
+  // ★Ctrl+Enter で送信
+  chatInput.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'Enter') {
+      e.preventDefault();
+      // modernなブラウザでは requestSubmit が使える
+      if (typeof chatForm.requestSubmit === 'function') {
+        chatForm.requestSubmit();
+      } else {
+        chatForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+      }
+    }
+  });
+
   chatForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const message = chatInput.value.trim();
@@ -55,7 +68,12 @@ window.addEventListener('DOMContentLoaded', function () {
     msg.className = `chat-message ${role}-message`;
     msg.textContent = text;
     chatBox.appendChild(msg);
-    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // ★チャットエリア外のメイン部分をスクロール（サイドバーは動かない）
+    window.scrollTo({
+      top: document.getElementById('main-content').scrollHeight,
+      behavior: 'smooth'
+    });
   }
 
   /** 「…」の読み込み中メッセージを消す */

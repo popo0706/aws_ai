@@ -1,19 +1,22 @@
 /* main.css（修正後 全量） */
+
+/* ——— 全体設定 ——— */
 body {
   background: #18191A;
   color: #f2f2f7;
   margin: 0;
   font-family: 'Source Sans Pro', 'Noto Sans JP', Arial, sans-serif;
-  min-height: 100vh;
   font-size: 1.07rem;
 }
 
+/* ——— レイアウト ——— */
 .app-container {
   display: flex;
-  min-height: 100vh;
+  /* 画面全体を占有し、メインのみスクロールさせる */
+  height: 100vh;
 }
 
-/* --- サイドバー --- */
+/* サイドバー */
 .sidebar {
   width: 240px;
   background: #22242a;
@@ -82,7 +85,10 @@ body {
   gap: 8px;
 }
 .sidebar-icon { font-size: 1.2em; }
-.sidebar-title-text { font-size: 1.09em; letter-spacing: .03em; }
+.sidebar-title-text {
+  font-size: 1.09em;
+  letter-spacing: .03em;
+}
 .sidebar-section {
   display: flex;
   flex-direction: column;
@@ -94,7 +100,6 @@ body {
   font-size: 1.07rem;
   letter-spacing: .02em;
 }
-/* ドロップダウンの幅調整と省略表示 */
 .sidebar select {
   background: #292b32;
   color: #f2f2f7;
@@ -103,14 +108,13 @@ body {
   padding: 6px 10px;
   font-size: 1.08rem;
   width: 100%;
-  display: block;
   box-sizing: border-box;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* --- メイン部分 --- */
+/* メインエリア */
 .main-content {
   flex: 1;
   padding: 40px 0 32px 0;
@@ -118,7 +122,11 @@ body {
   flex-direction: column;
   align-items: center;
   min-width: 0;
+  /* サイドバーは動かさず、メインエリアのみスクロール */
+  overflow-y: auto;
 }
+
+/* 中央揃え用のコンテナ */
 .centered-ui {
   width: 100%;
   max-width: 740px;
@@ -128,6 +136,7 @@ body {
   align-items: stretch;
 }
 
+/* 見出し */
 header h1 {
   margin: 0 0 32px 0;
   font-size: 2.0rem;
@@ -138,22 +147,12 @@ header h1 {
   text-align: center;
 }
 
-/* --- チャットボックス --- */
+/* ——— チャットボックス ——— */
 .chat-box {
-  /* 背景を透明にしてページ背景と同化 */
-  background: transparent;
-  /* 必要ならボックスの影や角丸を外してもOK */
-  /* box-shadow: none; */
-  /* border-radius: 0; */
-
+  background: transparent; /* 親要素と同化 */
   padding: 22px;
-  /* 高さ制限・内側スクロールはなしに */
-  /* min-height は残してもよいですが、必要なら調整可能です */
   min-height: 240px;
   margin-bottom: 18px;
-  /* max-height: 48vh; */
-  /* overflow-y: auto; */
-
   font-size: 1.12rem;
   word-break: break-word;
   width: 100%;
@@ -164,7 +163,7 @@ header h1 {
   align-items: flex-start;
 }
 
-/* --- チャットメッセージのスタイル --- */
+/* メッセージ */
 .chat-message {
   margin-bottom: 8px;
   padding: 10px 14px;
@@ -184,7 +183,7 @@ header h1 {
   align-self: flex-end;
 }
 
-/* --- 入力欄まわり --- */
+/* ——— 入力欄まわり ——— */
 .chat-input-wrap {
   background: #23252b;
   border-radius: 14px;
@@ -215,7 +214,9 @@ header h1 {
   overflow-y: auto;
   box-sizing: border-box;
 }
-#chat-input:focus { background: #22242a; }
+#chat-input:focus {
+  background: #22242a;
+}
 
 .chat-input-actions {
   background: #222325;
@@ -256,6 +257,7 @@ header h1 {
   font-size: 0.92rem;
   margin-left: 4px;
 }
+
 #file-list {
   font-size: 0.98rem;
   color: #bfc8de;
@@ -263,6 +265,7 @@ header h1 {
   line-height: 1.4;
   word-break: break-all;
 }
+
 .file-item {
   display: flex;
   align-items: center;
@@ -282,6 +285,7 @@ header h1 {
   margin-top: 4px;
 }
 
+/* ボタン群 */
 .actions {
   display: flex;
   gap: 12px;
@@ -300,12 +304,17 @@ button {
   transition: background 0.18s;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
-button:hover { background: #3956b5; }
+button:hover {
+  background: #3956b5;
+}
 #clear-btn {
   background: #585c67;
 }
-#clear-btn:hover { background: #32333a; }
+#clear-btn:hover {
+  background: #32333a;
+}
 
+/* フッターノート */
 .footer-note {
   margin-top: 32px;
   font-size: 0.93rem;
@@ -313,7 +322,12 @@ button:hover { background: #3956b5; }
   text-align: center;
 }
 
+/* レスポンシブ対応 */
 @media (max-width: 700px) {
-  .centered-ui { max-width: 98vw; }
-  header h1 { font-size: 1.1rem; }
+  .centered-ui {
+    max-width: 98vw;
+  }
+  header h1 {
+    font-size: 1.1rem;
+  }
 }
