@@ -18,11 +18,10 @@ window.addEventListener('DOMContentLoaded', function () {
   // 会話履歴を保持する配列
   const chatHistory = [];
 
-  // ★Ctrl+Enter で送信
+  // Ctrl+Enter で送信
   chatInput.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key === 'Enter') {
       e.preventDefault();
-      // modernなブラウザでは requestSubmit が使える
       if (typeof chatForm.requestSubmit === 'function') {
         chatForm.requestSubmit();
       } else {
@@ -31,24 +30,24 @@ window.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+  // 送信ボタン（submit）押下時
   chatForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const message = chatInput.value.trim();
     if (!message) return;
 
-    // ① ユーザー発言を画面と履歴に追加
+    // ユーザー発言を追加
     appendMessage('user', message);
     chatHistory.push({ role: 'user', content: message });
     chatInput.value = '';
 
-    // ② 読み込み中表示
+    // 読み込み中マーク
     appendMessage('assistant', '…');
 
     try {
-      // ③ 履歴ごとサーバに送信
+      // 履歴ごと送信
       const reply = await window.sendMessage(chatHistory);
-
-      // ④ 読み込み中を消して、AI応答を画面・履歴に追加
+      // 読み込み中を削除して応答追加
       removeLastLoading();
       appendMessage('assistant', reply);
       chatHistory.push({ role: 'assistant', content: reply });
@@ -58,8 +57,25 @@ window.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+  // --- 新しい会話開始（クリア）ボタン ---
+  const clearBtn = document.getElementById('clear-btn');
+  clearBtn.addEventListener('click', () => {
+    // 履歴をリセット
+    chatHistory.length = 0;
+    // 画面のメッセージをクリア
+    chatBox.innerHTML = '';
+    // 添付ファイルリストをクリア（必要に応じて）
+    const fileList = document.getElementById('file-list');
+    if (fileList) fileList.innerHTML = '';
+    const fileInput = document.getElementById('file-input');
+    if (fileInput) fileInput.value = '';
+    // 入力欄をクリア＆フォーカス
+    chatInput.value = '';
+    chatInput.focus();
+  });
+
   /**
-   * チャットボックスにメッセージを追加する
+   * メッセージをチャットボックスに追加
    * @param {'user'|'assistant'} role
    * @param {string} text
    */
@@ -68,15 +84,14 @@ window.addEventListener('DOMContentLoaded', function () {
     msg.className = `chat-message ${role}-message`;
     msg.textContent = text;
     chatBox.appendChild(msg);
-
-    // ★チャットエリア外のメイン部分をスクロール（サイドバーは動かない）
+    // メインエリアをスクロール
     window.scrollTo({
       top: document.getElementById('main-content').scrollHeight,
       behavior: 'smooth'
     });
   }
 
-  /** 「…」の読み込み中メッセージを消す */
+  /** 読み込み中マーク「…」を削除 */
   function removeLastLoading() {
     const msgs = chatBox.getElementsByClassName('assistant-message');
     if (msgs.length && msgs[msgs.length - 1].textContent === '…') {

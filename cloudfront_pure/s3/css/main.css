@@ -12,11 +12,10 @@ body {
 /* ——— レイアウト ——— */
 .app-container {
   display: flex;
-  /* 画面全体を占有し、メインのみスクロールさせる */
-  height: 100vh;
+  height: 100vh; /* メインのみスクロール */
 }
 
-/* サイドバー */
+/* ——— サイドバー ——— */
 .sidebar {
   width: 240px;
   background: #22242a;
@@ -114,7 +113,7 @@ body {
   text-overflow: ellipsis;
 }
 
-/* メインエリア */
+/* ——— メインエリア ——— */
 .main-content {
   flex: 1;
   padding: 40px 0 32px 0;
@@ -122,11 +121,10 @@ body {
   flex-direction: column;
   align-items: center;
   min-width: 0;
-  /* サイドバーは動かさず、メインエリアのみスクロール */
   overflow-y: auto;
 }
 
-/* 中央揃え用のコンテナ */
+/* ——— 中央揃えコンテナ ——— */
 .centered-ui {
   width: 100%;
   max-width: 740px;
@@ -136,7 +134,7 @@ body {
   align-items: stretch;
 }
 
-/* 見出し */
+/* ——— ヘッダー ——— */
 header h1 {
   margin: 0 0 32px 0;
   font-size: 2.0rem;
@@ -149,7 +147,7 @@ header h1 {
 
 /* ——— チャットボックス ——— */
 .chat-box {
-  background: transparent; /* 親要素と同化 */
+  background: transparent;
   padding: 22px;
   min-height: 240px;
   margin-bottom: 18px;
@@ -157,13 +155,12 @@ header h1 {
   word-break: break-word;
   width: 100%;
   box-sizing: border-box;
-
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-/* メッセージ */
+/* ——— メッセージ ——— */
 .chat-message {
   margin-bottom: 8px;
   padding: 10px 14px;
@@ -242,7 +239,6 @@ header h1 {
   transition: background 0.16s;
   padding: 0;
   color: #b7b7c7;
-  /* ツールチップ用に相対位置を確保 */
   position: relative;
 }
 .icon-btn:hover,
@@ -269,26 +265,7 @@ header h1 {
   word-break: break-all;
 }
 
-.file-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 4px;
-}
-.remove-file-btn {
-  background: none;
-  border: none;
-  color: #e87b7b;
-  font-size: 1.1rem;
-  cursor: pointer;
-  padding: 0 4px;
-}
-#file-list .error {
-  color: #e87b7b;
-  margin-top: 4px;
-}
-
-/* ——— ボタン群 ——— */
+/* ——— 既存のボタン群 ——— */
 .actions {
   display: flex;
   gap: 12px;
@@ -310,22 +287,35 @@ button {
 button:hover {
   background: #3956b5;
 }
+
+/* ——— 落ち着いた「新しい会話を開始」ボタン ——— */
 #clear-btn {
-  background: #585c67;
+  background: transparent;
+  color: #c9c9c9;
+  border: 1px solid #3e3f41;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: none;
+  transition: background 0.2s;
 }
 #clear-btn:hover {
-  background: #32333a;
+  background: rgba(255,255,255,0.08);
 }
 
-/* ——— フッターノート ——— */
-.footer-note {
-  margin-top: 32px;
-  font-size: 0.93rem;
-  color: #8e94a6;
-  text-align: center;
+/* プラス付きチャットバブルアイコン */
+.new-chat-icon {
+  stroke: currentColor;
+  width: 16px;
+  height: 16px;
 }
 
-/* ——— スクロールバー ChatGPT風 ——— */
+/* ——— ChatGPT風スクロールバー ——— */
 /* Firefox */
 .main-content {
   scrollbar-width: thin;
@@ -346,15 +336,14 @@ button:hover {
   background: #6b6b7b;
 }
 
-/* ——— カスタムツールチップ ChatGPT風 ——— */
-/* index.html の送信ボタンに data-tooltip="送信 (Ctrl+Enter)" を追加してください */
+/* ——— カスタムツールチップ ——— */
 .icon-btn[data-tooltip]::after {
   content: attr(data-tooltip);
   position: absolute;
   bottom: calc(100% + 6px);
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(30, 30, 30, 0.95);
+  background: rgba(30,30,30,0.9);
   color: #f2f2f7;
   padding: 4px 8px;
   border-radius: 4px;
@@ -362,11 +351,19 @@ button:hover {
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease-in-out;
+  transition: opacity 0.2s;
   z-index: 1000;
 }
-.icon-btn[data-tooltip]:hover::after {
+.icon-btn:hover[data-tooltip]::after {
   opacity: 1;
+}
+
+/* ——— フッターノート ——— */
+.footer-note {
+  margin-top: 32px;
+  font-size: 0.93rem;
+  color: #8e94a6;
+  text-align: center;
 }
 
 /* ——— レスポンシブ対応 ——— */

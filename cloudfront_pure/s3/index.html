@@ -33,11 +33,7 @@
           <select id="model">
             <option value="o3">o3</option>
             <option value="gpt-4">gpt-4</option>
-            <option
-              value="超長いモデル名をテストするためのダミーテキスト"
-            >
-              超長いモデル名をテストするためのダミーテキスト
-            </option>
+            <option value="dummy-long-name">超長いモデル名をテストするためのダミーテキスト</option>
           </select>
         </div>
         <div class="sidebar-section">
@@ -67,8 +63,7 @@
             ></textarea>
             <div class="chat-input-actions">
               <div class="action-left">
-                <label for="file-input" class="icon-btn" title="ファイルを添付">
-                  <!-- ファイルアイコンSVG -->
+                <label for="file-input" class="icon-btn" data-tooltip="ファイルを添付">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                     <circle cx="12" cy="12" r="11" fill="#23252b" />
                     <path
@@ -88,25 +83,49 @@
                 </label>
               </div>
               <div class="action-right">
-                <!-- 送信ボタンにツールチップ(title)を追加 -->
-                <button type="submit" class="icon-btn" aria-label="送信" data-tooltip="送信 (Ctrl+Enter)">
-                  <!-- 送信アイコンSVG -->
+                <button
+                  type="submit"
+                  class="icon-btn"
+                  aria-label="送信"
+                  data-tooltip="送信 (Ctrl+Enter)"
+                >
                   <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
                     <path
                       d="M4 11L18 4L11 18L10 13L4 11Z"
-                      fill="#fff"
+                      fill="currentColor"
                     />
                   </svg>
                 </button>
               </div>
             </div>
           </div>
+
           <span class="upload-note">
             最大3ファイル・1ファイル8MBまで・合計10MBまで
           </span>
           <div id="file-list"></div>
+
           <div class="actions">
-            <button type="button" id="clear-btn">🗑 クリア</button>
+            <button type="button" id="clear-btn">
+              <svg
+                class="new-chat-icon"
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <!-- バブル本体 -->
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                <!-- プラス記号 -->
+                <line x1="12" y1="8" x2="12" y2="14" />
+                <line x1="9" y1="11" x2="15" y2="11" />
+              </svg>
+              新しい会話を開始
+            </button>
           </div>
         </form>
 
@@ -117,9 +136,7 @@
     </main>
   </div>
 
-  <!-- API 呼び出しロジック -->
   <script src="./js/apiService.js" defer></script>
-  <!-- 画面操作ロジック -->
   <script src="./js/main.js" defer></script>
 </body>
 
