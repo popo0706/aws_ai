@@ -242,6 +242,8 @@ header h1 {
   transition: background 0.16s;
   padding: 0;
   color: #b7b7c7;
+  /* ツールチップ用に相対位置を確保 */
+  position: relative;
 }
 .icon-btn:hover,
 .icon-btn:focus {
@@ -252,6 +254,7 @@ header h1 {
   pointer-events: none;
 }
 
+/* ——— ファイル添付まわり ——— */
 .upload-note {
   color: #b0b0b8;
   font-size: 0.92rem;
@@ -285,7 +288,7 @@ header h1 {
   margin-top: 4px;
 }
 
-/* ボタン群 */
+/* ——— ボタン群 ——— */
 .actions {
   display: flex;
   gap: 12px;
@@ -314,7 +317,7 @@ button:hover {
   background: #32333a;
 }
 
-/* フッターノート */
+/* ——— フッターノート ——— */
 .footer-note {
   margin-top: 32px;
   font-size: 0.93rem;
@@ -322,7 +325,51 @@ button:hover {
   text-align: center;
 }
 
-/* レスポンシブ対応 */
+/* ——— スクロールバー ChatGPT風 ——— */
+/* Firefox */
+.main-content {
+  scrollbar-width: thin;
+  scrollbar-color: #52525c transparent;
+}
+/* Webkit系 */
+.main-content::-webkit-scrollbar {
+  width: 8px;
+}
+.main-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.main-content::-webkit-scrollbar-thumb {
+  background: #52525c;
+  border-radius: 4px;
+}
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: #6b6b7b;
+}
+
+/* ——— カスタムツールチップ ChatGPT風 ——— */
+/* index.html の送信ボタンに data-tooltip="送信 (Ctrl+Enter)" を追加してください */
+.icon-btn[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(30, 30, 30, 0.95);
+  color: #f2f2f7;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 1000;
+}
+.icon-btn[data-tooltip]:hover::after {
+  opacity: 1;
+}
+
+/* ——— レスポンシブ対応 ——— */
 @media (max-width: 700px) {
   .centered-ui {
     max-width: 98vw;
